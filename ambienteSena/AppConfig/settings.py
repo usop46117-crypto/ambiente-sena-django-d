@@ -1,5 +1,5 @@
 """
-Django settings for AmbienteSena project.
+Django settings for AppConfig project.
 Actualizado para despliegue en Render + MySQL (Clever Cloud)
 """
 
@@ -13,21 +13,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Cargar variables de entorno del archivo .env
 load_dotenv()
 
-# RUTA PARA LAS IMAGENES DE LOS ELEMENTOS
-RUTA_IMAGENES_ELEMENTOS = BASE_DIR / 'AmbienteSena' / 'Public' / 'Img' / 'elementos'
+# RUTA PARA LAS IMAGENES DE LOS ELEMENTOS (Cambiado a AppConfig)
+RUTA_IMAGENES_ELEMENTOS = BASE_DIR / 'AppConfig' / 'Public' / 'Img' / 'elementos'
 
 # --- CONFIGURACIÓN DE SEGURIDAD ---
 
-# Se usa la clave del .env o una por defecto para desarrollo
 SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-kj7l)0lu4&65=8u0m#vsh+vt#kc7lipc+i0a$_4-zx#sq7$#0g')
 
-# DEBUG se apaga automáticamente si no estás en local
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Configuración de Hosts permitidos (Incluye Render)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.3.129.163', '.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AppConfig.settings')
+# Corregido: Definir RENDER_EXTERNAL_HOSTNAME antes de usarlo
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
@@ -35,7 +33,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 # --- DEFINICIÓN DE APLICACIONES ---
 
 INSTALLED_APPS = [
-    'AmbienteSena',
+    'AppConfig',  # Antes decía AmbienteSena
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Middleware para estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,12 +53,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'AmbienteSena.urls'
+# Antes decía AmbienteSena.urls
+ROOT_URLCONF = 'AppConfig.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'AmbienteSena' / 'Templates'],
+        'DIRS': [BASE_DIR / 'AppConfig' / 'Templates'], # Antes decía AmbienteSena
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,7 +71,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'AmbienteSena.wsgi.application'
+# Antes decía AmbienteSena.wsgi.application
+WSGI_APPLICATION = 'AppConfig.wsgi.application'
 
 
 # --- BASE DE DATOS (MYSQL - CLEVER CLOUD) ---
@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # --- INTERNACIONALIZACIÓN ---
 
-LANGUAGE_CODE = 'es-co' # Cambiado a español
+LANGUAGE_CODE = 'es-co'
 TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_TZ = True
@@ -114,15 +114,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Directorio donde están tus archivos estáticos en desarrollo
+# Antes decía AmbienteSena
 STATICFILES_DIRS = [
-    BASE_DIR / 'AmbienteSena' / 'Public'
+    BASE_DIR / 'AppConfig' / 'Public'
 ]
 
-# Directorio donde se recopilarán para producción
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Configuración de almacenamiento para producción (WhiteNoise)
 if not DEBUG:
     STORAGES = {
         "staticfiles": {
