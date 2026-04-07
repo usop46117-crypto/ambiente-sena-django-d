@@ -27,7 +27,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 # Configuración de Hosts permitidos (Incluye Render)
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.3.129.163', '.onrender.com']
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AppConfig.settings')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
